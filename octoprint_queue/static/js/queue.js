@@ -236,7 +236,7 @@ $(function() {
                 data.origin = components[0];
                 data.path = components[1];
             }
-            self.files.loadFile(data);    
+            self.files.loadFile(data, false);
         }
 
         self.showAddDialog = function() {
