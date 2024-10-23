@@ -90,7 +90,7 @@ $(function() {
         }
 
         self.onAfterTabChange = function(current, previous) {
-            self.onQueueTab = current == "#tab_plugin_queue";
+            self.onQueueTab = current == "#tab_plugin_print_queue";
             self.requestData();
         }
 
@@ -202,7 +202,7 @@ $(function() {
             self.editDialog.modal("hide");
             self.listHelper.addFilter ('queue');
             if (!self.onQueueTab) {
-                window.location.hash = "tab_plugin_queue";
+                window.location.hash = "tab_plugin_print_queue";
             }
         }
 
@@ -381,6 +381,6 @@ $(function() {
     OCTOPRINT_VIEWMODELS.push({
         construct: QueueViewModel,
         dependencies: [ "loginStateViewModel", "settingsViewModel", "usersViewModel", "filesViewModel" ],
-        elements: ["#tab_plugin_queue", "#settings_plugin_queue" ]
+        elements: ["#tab_plugin_print_queue", "#settings_plugin_print_queue" ]
     });
 });
