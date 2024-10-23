@@ -99,8 +99,22 @@ $(function() {
             self.itemForEditing().filename(payload.storage + ":" + payload.path);
         }
 
+
+
+        self.isLoadActionPossible = ko.pureComputed(function() {
+            return (self.loginState.hasPermission(self.access.permissions.FILES_SELECT) && self.isOperational() && !self.isPrinting() && !self.isPaused() && !self.isLoading());
+        });
+        self.isLoadAndPrintActionPossible = ko.pureComputed(function() {
+            return (self.loginState.hasPermission(self.access.permissions.PRINT) && self.isOperational() && self.isLoadActionPossible());
+        });
+
         self.fromCurrentData = function(data) {
-            self.isPrinting (data.state.flags.printing);
+            self.isPrinting (
+                data.state.flags.printing ||
+                !data.flags.operational ||
+                data.flags.loading ||
+                data.flags.paused
+            );
         }
 
         self.requestData = function(params) {
@@ -206,7 +220,7 @@ $(function() {
             }
         }
 
-        self.loadFile = function(queueItem) {
+        self.loadFile = function(queueItem, print) {
             var data = {};
             var components = queueItem.filename().split(":");
             if (components.length == 1) {
@@ -216,7 +230,7 @@ $(function() {
                 data.origin = components[0];
                 data.path = components[1];
             }
-            self.files.loadFile(data, false);
+            self.files.loadFile(data, print ?? false);
         }
 
         self.showAddDialog = function() {
