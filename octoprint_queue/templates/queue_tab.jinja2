@@ -39,8 +39,7 @@ The print queue is for logged-in users only.
     <thead>
         <tr>
             <th style="width: 14%;">Date</th>
-            <th style="width: 25%;">Customer</th>
-            <th style="width: 28%;">File</th>
+            <th style="width: 53%;">File</th>
             <th style="width: 18%;">Print type</th>
             <th style="width: 15%;">&nbsp;</th>
         </tr>
@@ -49,13 +48,6 @@ The print queue is for logged-in users only.
         <tr>
             <td data-bind="text: timeAgo, attr: { title: submissiontimestamp}"></td>
             <td>
-                <div data-bind="text: customer, attr: { title: customer }">&nbsp;</div>
-                <div class="additionalInfo">
-                    <div data-bind="visible: contact">Contact: <span data-bind="text: contact"></span></div>
-                    <div data-bind="visible: staff">Staff member: <span data-bind="text: staff"></span></div>
-                </div>
-            </td>
-            <td>
                 <div data-bind="html: filenameString">&nbsp;</div>
                 <div class="additionalInfo">
                     <div data-bind="visible: note">Note: <span data-bind="text: note"></span></div>
@@ -63,9 +55,6 @@ The print queue is for logged-in users only.
             </td>
             <td>
                 <div data-bind="html: printtypeString">&nbsp;</div>
-                <div class="additionalInfo">
-                    <div data-bind="visible: cost">Cost: <span data-bind="text: cost"></span><span data-bind="visible: prepaidBool"> (prepaid)</span></div>
-                </div>
             </td>
             <td>
                 <div class="btn-group action-buttons" data-bind="visible: $root.loginState.isUser()">
@@ -108,21 +97,9 @@ The print queue is for logged-in users only.
     <div class="modal-body">
         <form class="form-horizontal" action="javascript:void(0)">
             <div class="control-group">
-                <label class="control-label">Staff member:</label>
+                <label class="control-label">Submission type:</label>
                 <div class="controls">
-                    <input type="text" data-bind="value: staff" style="width:95%;">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">Customer name:</label>
-                <div class="controls">
-                    <input type="text" data-bind="value: customer" style="width:95%;">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">Customer contact info:</label>
-                <div class="controls">
-                    <input type="text" data-bind="value: contact" style="width:95%;">
+                    <select data-bind="options: $parent.printtypes, value: printtypeString, optionsCaption: 'Select type'" style="width:95%;"></select>
                 </div>
             </div>
             <div class="control-group">
@@ -135,20 +112,6 @@ The print queue is for logged-in users only.
                 <label class="control-label">Notes:</label>
                 <div class="controls">
                     <textarea rows="2" data-bind="textInput: note" style="width:95%;"></textarea>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">Cost</label>
-                <div class="controls">
-                    <input type="text" data-bind="value: cost" style="width:25%;margin-right:15px;"> 
-                    <span style="height:100%;vertical-align:middle;line-height:100%;">Prepaid?</span>
-                    <input type="checkbox" data-bind="checked: prepaid">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">Submission type:</label>
-                <div class="controls">
-                    <select data-bind="options: $parent.printtypes, value: printtypeString, optionsCaption: 'Select type'" style="width:95%;"></select>
                 </div>
             </div>
         </form>
@@ -171,7 +134,6 @@ The print queue is for logged-in users only.
         <p data-bind="visible:archivedBool">This will restore the print request to the queue.</p>
         <h5>Job details</h5>
         <ul>
-            <li>Customer: <span data-bind="text: customer"></span></li>
             <li>File: <span data-bind="text: filename"></span></li>
             <li>Note: <span data-bind="text: note"></span></li>
         </ul>

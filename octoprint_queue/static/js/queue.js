@@ -2,7 +2,7 @@
  * View model for OctoPrint-Queue
  *
  * Author: Chris Hennes
- * License: AGPLv3 
+ * License: AGPLv3
  */
 $(function() {
     function QueueViewModel(parameters) {
@@ -25,27 +25,18 @@ $(function() {
 
         var QueueItem = function(data) {
             this.id = ko.observable();
-            this.staff = ko.observable();
-            this.customer = ko.observable();
-            this.contact = ko.observable();
-            this.filename = ko.observable();
-            this.cost = ko.observable();
-            this.note = ko.observable();
-
-            this.archived = ko.observable();
-            this.prepaid = ko.observable();
             this.printtype = ko.observable();
+            this.filename = ko.observable();
+            this.note = ko.observable();
+            this.archived = ko.observable();
             this.submissiontimestamp = ko.observable();
 
             this.archivedBool = ko.pureComputed(function() {
                 return this.archived() == 1;
             }, this);
-            this.prepaidBool = ko.pureComputed(function() {
-                return this.prepaid() == 1;
-            }, this);
             this.filenameString = ko.pureComputed(function() {
                 var c = this.filename().split(":");
-                return c.length > 1? c[1]:c[0];
+                return c.length > 1 ? c[1] : c[0];
             }, this);
             this.printtypeString = ko.computed({
                 read: function() {
@@ -54,7 +45,7 @@ $(function() {
                     } else {
                         return "";
                     }
-                }, 
+                },
                 write: function (value) {
                     this.printtype (self.printtypes().findIndex(x => x == value));
                 }
@@ -73,17 +64,11 @@ $(function() {
 
         QueueItem.prototype.update = function (data) {
             var updateData = data || {};
-            this.id (updateData.id || 0);  
-            this.staff (updateData.staff || "");  
-            this.customer (updateData.customer || "");  
-            this.contact (updateData.contact || "");  
-            this.filename (updateData.filename || "");  
-            this.cost (updateData.cost || 0.0);  
-            this.note (updateData.note || "");  
-
-            this.archived (updateData.archived || false);  
-            this.prepaid (updateData.prepaid || false);  
-            this.printtype (updateData.printtype);  
+            this.id (updateData.id || 0);
+            this.printtype (updateData.printtype);
+            this.filename (updateData.filename || "");
+            this.note (updateData.note || "");
+            this.archived (updateData.archived || false);
             this.submissiontimestamp (updateData.submissiontimestamp || 0);
         }
 
@@ -143,7 +128,7 @@ $(function() {
                 error: self.noResponse
             }).always(function () {
                 self.requestingData(false);
-                self.startingUp(false); // Don't mark this as false until we've actually requested data at least once 
+                self.startingUp(false); // Don't mark this as false until we've actually requested data at least once
                 icon.removeClass("icon-spinner icon-spin");
             });
         }
@@ -196,15 +181,10 @@ $(function() {
 
         self.addToQueue = function(event) {
             var payload = {
-                staff: self.itemForEditing().staff(),
-                customer: self.itemForEditing().customer(),
-                contact: self.itemForEditing().contact(),
+                printtype: self.itemForEditing().printtype(),
                 filename: self.itemForEditing().filename(),
                 note: self.itemForEditing().note(),
-                cost: self.itemForEditing().cost(),
-                prepaid: self.itemForEditing().prepaid(),
-                printtype: self.itemForEditing().printtype(),
-                archived: 0 
+                archived: 0
             };
 
             $.ajax({
@@ -229,7 +209,7 @@ $(function() {
         self.loadFile = function(queueItem) {
             var data = {};
             var components = queueItem.filename().split(":");
-            if (components.length == 1) { 
+            if (components.length == 1) {
                 data.origin = "local";
                 data.path = components[0];
             } else {
@@ -251,15 +231,10 @@ $(function() {
         self.modifyQueueItem = function(event) {
             var payload = {
                 id: self.itemForEditing().id(),
-                staff: self.itemForEditing().staff(),
-                customer: self.itemForEditing().customer(),
-                contact: self.itemForEditing().contact(),
+                printtype: self.itemForEditing().printtype(),
                 filename: self.itemForEditing().filename(),
                 note: self.itemForEditing().note(),
-                cost: self.itemForEditing().cost(),
-                prepaid: self.itemForEditing().prepaid(),
                 archived: self.itemForEditing().archived(),
-                printtype: self.itemForEditing().printtype()
             };
 
             $.ajax({
@@ -289,7 +264,7 @@ $(function() {
         self.onCancelArchive = function() {
         }
 
-        
+
         /* ### Settings ### */
 
         self.pullPrintTypesFromStorage = function() {

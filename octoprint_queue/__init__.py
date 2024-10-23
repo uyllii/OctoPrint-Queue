@@ -32,14 +32,9 @@ class QueuePlugin(octoprint.plugin.StartupPlugin,
 CREATE TABLE IF NOT EXISTS queue (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   submissiontimestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  staff TEXT NOT NULL DEFAULT "",
-  customer TEXT NOT NULL DEFAULT "",
-  contact TEXT NOT NULL DEFAULT "",
   filename TEXT NOT NULL DEFAULT "",
   note TEXT,
   printtype INTEGER,
-  cost REAL,
-  prepaid INTEGER,
   status INTEGER,
   archived INTEGER
 );
@@ -73,7 +68,7 @@ END;
 
 	def get_settings_defaults(self):
 		return dict(
-			printtypes=["Urgent","Customer","Student","Internal","Other"]
+			printtypes=["Urgent","High","Medium","Low","Other"]
 		)
 
 	##~~ AssetPlugin mixin
@@ -95,12 +90,12 @@ END;
 
 				# version check: github repository
 				type="github_release",
-				user="chennes",
+				user="uyllii",
 				repo="OctoPrint-Queue",
 				current=self._plugin_version,
 
 				# update method: pip
-				pip="https://github.com/chennes/OctoPrint-Queue/archive/{target_version}.zip"
+				pip="https://github.com/uyllii/OctoPrint-Queue/archive/{target_version}.zip"
 			)
 		)
 
@@ -157,14 +152,9 @@ END;
 		except BadRequest:
 			return make_response("Malformed JSON body in request", 400)
 
-		staff = json_data["staff"] if "staff" in json_data else ""  
-		customer = json_data["customer"] if "customer" in json_data else ""  
-		contact = json_data["contact"] if "contact" in json_data else ""  
-		filename = json_data["filename"]   if "filename" in json_data else ""  
+		filename = json_data["filename"]   if "filename" in json_data else ""
 		note = json_data["note"]   if "note" in json_data else ""  
 		printtype = json_data["printtype"]   if "printtype" in json_data else 0  
-		cost = json_data["cost"]   if "cost" in json_data else 0.0
-		prepaid = json_data["prepaid"]   if "prepaid" in json_data else 0  
 		status = json_data["status"]   if "status" in json_data else 0
 		archived = json_data["archived"]   if "archived" in json_data else 0  
 		
@@ -172,7 +162,7 @@ END;
 
 		connection = sqlite3.connect(self._queue_db_path)
 		cursor = connection.cursor()
-		cursor.execute("INSERT INTO queue (staff, customer, contact, filename, note, printtype, cost, prepaid, status, archived) VALUES (?,?,?,?,?,?,?,?,?,?)",(staff,customer,contact,filename,note,printtype,cost,prepaid,status,archived))
+		cursor.execute("INSERT INTO queue (filename, note, printtype, status, archived) VALUES (?,?,?,?,?)",(filename,note,printtype,status,archived))
 		connection.commit()
 		connection.close()
 		return self.getQueue()
@@ -208,21 +198,16 @@ END;
 		if not "id" in json_data:
 			return make_response("No ID in request", 400)
 		itemid = json_data["id"]
-		staff = json_data["staff"] if "staff" in json_data else ""  
-		customer = json_data["customer"] if "customer" in json_data else ""  
-		contact = json_data["contact"] if "contact" in json_data else ""  
-		filename = json_data["filename"]   if "filename" in json_data else ""  
+		filename = json_data["filename"]   if "filename" in json_data else ""
 		note = json_data["note"]   if "note" in json_data else ""  
 		printtype = json_data["printtype"]   if "printtype" in json_data else 0  
-		cost = json_data["cost"]   if "cost" in json_data else 0.0
-		prepaid = json_data["prepaid"]   if "prepaid" in json_data else 0  
 		status = json_data["status"]   if "status" in json_data else 0
 		archived = json_data["archived"] if "archived" in json_data else 1  
 
 		self._queue_dict = None
 		connection = sqlite3.connect(self._queue_db_path)
 		cursor = connection.cursor()
-		cursor.execute("UPDATE queue SET staff=?,customer=?,contact=?,filename=?,note=?,printtype=?,cost=?,prepaid=?,status=?,archived=? where id=?",(staff,customer,contact,filename,note,printtype,cost,prepaid,status,archived,itemid))
+		cursor.execute("UPDATE queue SET filename=?,note=?,printtype=?,status=?,archived=? where id=?",(filename,note,printtype,status,archived,itemid))
 		connection.commit()
 		connection.close()
 		return self.getQueue()

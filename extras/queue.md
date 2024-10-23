@@ -8,11 +8,11 @@ authors:
 - Chris Hennes, Pioneer Library System
 license: AGPLv3 
 
-date: 2022-06-06
+date: 2024-10-23
 
-homepage: https://github.com/chennes/OctoPrint-Queue
-source: https://github.com/chennes/OctoPrint-Queue
-archive: https://github.com/chennes/OctoPrint-Queue/archive/master.zip
+homepage: https://github.com/uyllii/OctoPrint-Queue
+source: https://github.com/uyllii/OctoPrint-Queue
+archive: https://github.com/uyllii/OctoPrint-Queue/archive/master.zip
 
 tags:
 - ui 
@@ -40,11 +40,7 @@ compatibility:
 
 ## A simple print queue
 
-Designed for use at a public library, this plugin allows staff to efficiently manage customer print 
-jobs. Its simple interface and setup are easy to learn, and your organization can either implement its own
-prioritization scheme or use the one provided with the plugin. It is primarily intended as a staff communication
-mechanism, allowing staff to see which job they should start up next, as well as look up completed jobs
-to provide information to customers.
+Simple queue plugin.
 
 # Purely local
 
