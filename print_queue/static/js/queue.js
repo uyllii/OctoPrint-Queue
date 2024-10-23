@@ -85,7 +85,7 @@ $(function() {
         }
 
         self.onBeforeBinding = function () {
-            self.settings = self.global_settings.settings.plugins.queue;
+            self.settings = self.global_settings.settings.plugins.print_queue;
             self.pullPrintTypesFromStorage();
         }
 
@@ -120,7 +120,7 @@ $(function() {
             }
             self.requestingData(true);
             $.ajax({
-                url: "plugin/queue/queue",
+                url: "plugin/print_queue/queue",
                 type: "GET",
                 data: {force: force},
                 dataType: "json",
@@ -165,7 +165,7 @@ $(function() {
             };
 
             $.ajax({
-                url: "plugin/queue/archive",
+                url: "plugin/print_queue/archive",
                 type: "PUT",
                 data: JSON.stringify(payload),
                 dataType: "json",
@@ -188,7 +188,7 @@ $(function() {
             };
 
             $.ajax({
-                url: "plugin/queue/addtoqueue",
+                url: "plugin/print_queue/addtoqueue",
                 type: "PUT",
                 data: JSON.stringify(payload),
                 dataType: "json",
@@ -238,7 +238,7 @@ $(function() {
             };
 
             $.ajax({
-                url: "plugin/queue/modifyitem",
+                url: "plugin/print_queue/modifyitem",
                 type: "PUT",
                 data: JSON.stringify(payload),
                 dataType: "json",

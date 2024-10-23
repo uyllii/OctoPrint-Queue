@@ -1,4 +1,4 @@
 include README.md
-recursive-include octoprint_queue/templates *
-recursive-include octoprint_queue/translations *
-recursive-include octoprint_queue/static *
+recursive-include print_queue/templates *
+recursive-include print_queue/translations *
+recursive-include print_queue/static *
