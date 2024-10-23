@@ -1,11 +1,11 @@
 ---
 layout: plugin
 
-id: queue
-title: OctoPrint-Queue
+id: print_queue
+title: Print Queue
 description: A simple queue setup designed for use by staff at a public library. 
 authors: 
-- Chris Hennes, Pioneer Library System
+- David Oliver
 license: AGPLv3 
 
 date: 2024-10-23
